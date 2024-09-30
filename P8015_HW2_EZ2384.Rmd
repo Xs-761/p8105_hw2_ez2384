@@ -1,5 +1,5 @@
 ---
-title: "HW2"
+title: "P8015_HW2_EZ2384"
 output: github_document
 ---
 
