@@ -171,6 +171,28 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
            arrange(name, result_results, technical_results)
 ```
 
+```{r}
+  merged = merged %>% pivot_longer(
+                          cols=c("series_bakers", "series_bakes", "series_results"),
+                          names_to = "orig_series_names",
+                          values_to= "series",
+                          values_drop_na = TRUE
+                    )
+  
+  merged = merged %>% pivot_longer(
+                          cols=c("episode_bakes", "episode_results"),
+                          names_to = "orig_episode_names",
+                          values_to= "episodes",
+                          values_drop_na = TRUE
+                    )
+  
+  merged = merged %>% select(-orig_series_names, -orig_episode_names) %>% relocate(name, result_results, series, episodes ) %>% 
+           arrange() %>% 
+           rename(results=result_results, age=age_bakers, occupation=occupation_bakers, hometown=hometown_bakers, 
+                  stopper=stopper_bakes)
+
+```
+
 * **Component 4**: Export the final result into a .csv file
 ```{r}
   write.csv(merged, "C:/Users/Twilight/Desktop/Columbia/Fall Semester 2024/Data Science I/HWs/p8105_hw2_ez2384/merged.csv")
@@ -188,37 +210,22 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
 1. merge datasets by the unique identifier -- name
 1. relocate variable locations by name, results, technical_results, series_number, episode_number, etc.
 1. sort variables by name, results, technical_scores
+  **transposition of dataset**
+1. transpose original merged dataset by series and episode so that two columns can contain all series and episode data, respectively
+1. drop the orig_episode_names and orig_series_names as they are no longer needed
+1. sort the variables, rename the variables, and output
 
 * **Component 6**: Create a reader-friendly table showing the star baker or winner for each episode in Season 5-10.
                    Comment on this table - were there any predictable overall winners or any surprises?
 ```{r}
-  winners = merged %>%  select(name, result_results, starts_with("series"), starts_with("episode")) %>%
-                        filter(result_results %in% c("Runner-up", "STAR BAKER", "WINNER")) %>%
-                        filter(series_bakes %in% c(5:10) & series_results %in% c(5:10) & series_bakers %in% c(5:10)) %>%
-                        arrange()
-
-  winners = winners %>% pivot_longer(
-                          cols=c("series_bakers", "series_bakes", "series_results"),
-                          names_to = "orig_series_names",
-                          values_to= "series",
-                          values_drop_na = TRUE
-                    )
-  
-  winners = winners %>% pivot_longer(
-                          cols=c("episode_bakes", "episode_results"),
-                          names_to = "orig_episode_names",
-                          values_to= "episodes",
-                          values_drop_na = TRUE
-                    )
-  winners = winners %>% select(-orig_series_names, -orig_episode_names) %>% arrange()
-
-
-
-
+  winners = merged %>%  select(name, results, series, episodes) %>%
+                        filter(results %in% c("STAR BAKER", "WINNER")) %>%
+                        filter(series %in% c(5:10)) %>%
+                        arrange() %>% distinct(name, series, episodes, .keep_all = TRUE)
 
   winner_frequency = winners %>% count(name) %>% arrange(desc(n))
   
-  star_baker = winners %>% filter(result_results=="STAR BAKER")
+  star_baker = winners %>% filter(results=="STAR BAKER")
   star_baker_names = distinct(star_baker, name)
 ```
 * According to winner_frequency we can see that Kate is predominately winning (with 1197 occurrences of succeeding or winning).
