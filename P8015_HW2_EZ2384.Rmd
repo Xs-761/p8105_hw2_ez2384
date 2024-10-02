@@ -243,5 +243,3 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
 
   * Average viewership in Season1 is given by `r mean(viewers$series_1, na.rm=TRUE)`
   * Average viewership in Season5 is given by `r mean(viewers$series_5)`
-  
-`r`  
