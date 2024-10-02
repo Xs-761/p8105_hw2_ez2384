@@ -193,9 +193,29 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
                    Comment on this table - were there any predictable overall winners or any surprises?
 ```{r}
   winners = merged %>%  select(name, result_results, starts_with("series"), starts_with("episode")) %>%
-                        filter(result_results %in% c("IN", "Runner-up", "STAR BAKER")) %>%
+                        filter(result_results %in% c("Runner-up", "STAR BAKER", "WINNER")) %>%
                         filter(series_bakes %in% c(5:10) & series_results %in% c(5:10) & series_bakers %in% c(5:10)) %>%
                         arrange()
+
+  winners = winners %>% pivot_longer(
+                          cols=c("series_bakers", "series_bakes", "series_results"),
+                          names_to = "orig_series_names",
+                          values_to= "series",
+                          values_drop_na = TRUE
+                    )
+  
+  winners = winners %>% pivot_longer(
+                          cols=c("episode_bakes", "episode_results"),
+                          names_to = "orig_episode_names",
+                          values_to= "episodes",
+                          values_drop_na = TRUE
+                    )
+  winners = winners %>% select(-orig_series_names, -orig_episode_names) %>% arrange()
+
+
+
+
+
   winner_frequency = winners %>% count(name) %>% arrange(desc(n))
   
   star_baker = winners %>% filter(result_results=="STAR BAKER")
@@ -217,3 +237,4 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
   * Average viewership in Season1 is given by `r mean(viewers$series_1, na.rm=TRUE)`
   * Average viewership in Season5 is given by `r mean(viewers$series_5)`
   
+`r`  
