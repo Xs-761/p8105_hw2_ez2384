@@ -162,7 +162,7 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
     * Contestants included in bakers dataset that are not included in the bakes dataset is given by `r unmatched_bakers_bakes$name`
 
 * **Component 3**: Merge into a single, final dataset. Organize so that obs and var are in meaningful orders.
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
   merged <- bakers %>% left_join(bakes, by = "name") %>% left_join(results, by = "name")
 ```
 
