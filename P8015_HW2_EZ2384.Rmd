@@ -101,5 +101,9 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
   * **prof_trash_wheel**: 106 obs with 15 variables
   * **gwyna_trash_wheel**: 155 obs with 14 variables
   * **combined_trash**: 845 obs with 16 variables
+* Total weight of trash collected by Professor Trash Wheel is given by: `r sum(prof_trash_wheel$weight_tons, na.rm=TRUE)`
+* Total number of cigarette butts collected by Gwynnda in June of 2022 is given by: `r gwynnda_trash_wheel %>% filter(month=="June" & year==2022) %>% summarise(total = sum(cigarette_butts, rm.na=TRUE)) %>% pull(total)`
 
 #### Problem 3
+
+
