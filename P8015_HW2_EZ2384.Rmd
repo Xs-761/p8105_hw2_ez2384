@@ -71,11 +71,11 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
 **Read-in Trash Wheel dataset sheets and clean the datasets**
 ```{r}
 # Mr.Trash-Wheel
-  mr_trash_wheel = read_excel("../../Datasets/Trash_Wheel.xlsx", range="A2:N587") %>% janitor:: clean_names() %>% mutate(sports_balls = round(as.numeric(sports_balls),0)) %>% filter(!is.na(dumpster))
+  mr_trash_wheel = read_excel("../../Datasets/Trash_Wheel.xlsx", range="A2:N655") %>% janitor:: clean_names() %>% mutate(sports_balls = round(as.numeric(sports_balls),0)) %>% filter(!is.na(dumpster))
 # Prof.Trash-Wheel
-  prof_trash_wheel = read_excel("../../Datasets/Trash_Wheel.xlsx", sheet=2, range="A2:M109") %>% janitor::clean_names() %>% filter(!is.na(dumpster))
+  prof_trash_wheel = read_excel("../../Datasets/Trash_Wheel.xlsx", sheet=2, range="A2:M123") %>% janitor::clean_names() %>% filter(!is.na(dumpster))
 # Gwynnda Trash-Wheel
-  gwynnda_trash_wheel = read_excel("../../Datasets/Trash_Wheel.xlsx", sheet=4, range="A2:L159") %>% janitor::clean_names() %>% filter(!is.na(dumpster))
+  gwynnda_trash_wheel = read_excel("../../Datasets/Trash_Wheel.xlsx", sheet=4, range="A2:L266") %>% janitor::clean_names() %>% filter(!is.na(dumpster))
 ```
 
 **Combine Datasets**
@@ -97,10 +97,10 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
   * **Plastic Bottles/Polystyrene/Cigarette Butts/Glass Bottles/Plastic Bags/Wrappers/Sports Balls**: different genres of trash collected at that specific collection task
   * **Homes Powered**: number of homes could be powered by converting the specific amount of trash at that collection task into electricity
 * Number of observations in each dataframe after tidy processes:
-  * **mr_trash_wheel**: 584 obs with 16 variables
-  * **prof_trash_wheel**: 106 obs with 15 variables
-  * **gwyna_trash_wheel**: 155 obs with 14 variables
-  * **combined_trash**: 845 obs with 16 variables
+  * **mr_trash_wheel**: 651 obs with 15 variables
+  * **prof_trash_wheel**: 119 obs with 14 variables
+  * **gwyna_trash_wheel**: 263 obs with 13 variables
+  * **combined_trash**: 1033 obs with 15 variables
 * Total weight of trash collected by Professor Trash Wheel is given by: `r sum(prof_trash_wheel$weight_tons, na.rm=TRUE)`
 * Total number of cigarette butts collected by Gwynnda in June of 2022 is given by: `r gwynnda_trash_wheel %>% filter(month=="June" & year==2022) %>% summarise(total = sum(cigarette_butts, rm.na=TRUE)) %>% pull(total)`
 
