@@ -106,4 +106,77 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
 
 #### Problem 3
 
+* **Component 1**: Data Cleaning for the component datasets: bakers, bakes, results
+```{r}
+# Import, clean, tidy, and otherwise wrangle each of these datasets, remove observations containing empty values.
+  bakers  = read.csv("../../Datasets/gbb_datasets/bakers.csv")  %>% janitor::clean_names()  %>% 
+            mutate(baker_occupation=na_if(baker_occupation,""), hometown=na_if(hometown,"") ) %>% drop_na()
+  bakes   = read.csv("../../Datasets/gbb_datasets/bakes.csv")   %>% janitor::clean_names()  %>%
+            mutate(signature_bake=na_if(signature_bake,""), show_stopper=na_if(show_stopper,"")) %>% drop_na()
+  results = read.csv("../../Datasets/gbb_datasets/results.csv", skip=2) %>% janitor::clean_names() %>%
+            mutate(result=na_if(result,"")) %>% drop_na()
 
+# Label variables that appears in multiple datasets
+  bakers  = bakers %>% rename(name=baker_name, series_bakers=series, age_bakers=baker_age, 
+                              occupation_bakers=baker_occupation, hometown_bakers=hometown)
+  bakes   = bakes  %>% rename(name=baker, series_bakes=series, episode_bakes=episode, signature_bakes=signature_bake,
+                              stopper_bakes=show_stopper)
+  results = results%>% rename(name=baker, series_results=series, episode_results=episode, technical_results=technical,
+                              result_results=result)
+
+# Ensure unique identifier for each contestant
+  bakers  = bakers %>% mutate(name=sub(" .*", "", name))
+  
+# Put unique identifier to the very front in each dataset
+  bakers  = bakers %>% relocate(name)
+  bakes   = bakes  %>% relocate(name)
+  results = results%>% relocate(name)
+
+```
+
+```{r, include=FALSE}
+# Notes for part1
+
+#  Syntax and Coding Notes
+  #  1. sub() syntax:   sub(pattern, replacement, string_to_search)
+  #  2. RE expression:  " .*": search for the pattern of a space followed by one char followed by 0 or more occurrences of 
+  #                     previous char(which is .)
+  #  3. Value replacing rule in R:  NEW = OLD
+
+#  Assignment-related Notes
+  #  Label Variables:   Add post-fix of the corresponding dataset name to the variable names (except the unique identifier name)
+  #  Unique Identifier: Identify each participant by their FIRSTNAME only
+  #  Data Structure(use str() to examine):    BAKERS: name(char), series(int), age(int), occupation(char), hometown(char)
+  #                                           BAKES:  name(char), series(int), episode(int), signature(char)
+  #                                           RESULTS:name(char), series(int), episode(int), technical(int), result(char)
+  #  Dealing with missing/NA values: 1) turn all char empty strings into NA
+  #                                  2) drop all NA values throughout datasets
+```
+
+* **Component 2**: Examine Completeness and Correctness across datasets
+  * Datasets bakers, bakes, and results are all tidy after the data-cleaning procedures.
+    After the cleaning processes, dataset bakers is complete, 
+    dataset bakes is complete, dataset results
+
+  * 
+```{r}
+
+```
+
+* **Component 3**: Merge into a single, final dataset. Organize so that obs and var are in meaningful orders.
+```{r}
+
+```
+
+* **Component 4**: Export the final result into a .csv file
+```{r}
+
+```
+
+* **Component 5**: Description of data-cleaning process and discussion of final dataset
+
+* **Component 6**: Create a reader-friendly table showing the star baker or winner for each episode in Season 5-10.
+             Comment on this table - were there any predictable overall winders or any surprises?
+          
+* **Component 7**: Import, clean, tidy, and organize viewers.csv file. Show the first 10 rows of this dataset.
+             What is the average viewership in Season1 and Season5 respectively?
