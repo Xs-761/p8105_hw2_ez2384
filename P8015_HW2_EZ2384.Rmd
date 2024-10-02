@@ -209,6 +209,11 @@ common = intersect(A_stations, Subway_Transposed %>% filter(ada=="TRUE") %>% dis
 * **Component 7**: Import, clean, tidy, and organize viewers.csv file. Show the first 10 rows of this dataset.
                    What is the average viewership in Season1 and Season5 respectively?
 ```{r}
-
+  viewers = read.csv("../../Datasets/gbb_datasets/viewers.csv") %>% janitor::clean_names() %>% arrange()
+  # Ten observations given by
+  head(viewers, n=10)
 ```
 
+  * Average viewership in Season1 is given by `r mean(viewers$series_1, na.rm=TRUE)`
+  * Average viewership in Season5 is given by `r mean(viewers$series_5)`
+  
